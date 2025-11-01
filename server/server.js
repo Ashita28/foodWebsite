@@ -13,8 +13,8 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 const app = express();
 
 const PORT   = process.env.PORT || 5000;
-const ADMIN  = process.env.ADMIN  || 'https://food-website-backend-six.vercel.app';
-const CLIENT = process.env.CLIENT || 'https://food-website-client.vercel.app';
+const ADMIN  = process.env.ADMIN;
+const CLIENT = process.env.CLIENT;
 
 const ALLOW_VERCEL_PREVIEWS = String(process.env.ALLOW_VERCEL_PREVIEWS || 'true') === 'true';
 
