@@ -18,9 +18,7 @@ const CLIENT = process.env.CLIENT || 'https://food-website-client.vercel.app';
 
 const allowedOrigins = new Set([
   ADMIN,
-  CLIENT,
-  'https://food-website-backend-six.vercel.app', 
-  'https://food-website-client.vercel.app', 
+  CLIENT
 ]);
 
 const corsOptions = {
