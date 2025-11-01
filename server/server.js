@@ -20,7 +20,7 @@ const allowedOrigins = new Set([ADMIN, CLIENT]);
 
 const corsOptions = {
   origin(origin, cb) {
-    if (!origin) return cb(null, true);
+    if (!origin) return cb(null, true); 
     if (allowedOrigins.has(origin)) return cb(null, true);
     console.warn(`Blocked by CORS: ${origin}`);
     return cb(new Error(`Not allowed by CORS: ${origin}`));
@@ -31,9 +31,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); 
+app.options('/*', cors(corsOptions));            
 
 app.use(express.json());
+
+app.get('/', (req, res) => res.send('OK'));
 
 app.use('/', userRoutes);
 app.use('/', foodRoutes);
@@ -46,8 +48,6 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => console.error('MongoDB connection error:', err));
