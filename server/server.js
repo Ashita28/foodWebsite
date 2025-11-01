@@ -16,33 +16,12 @@ const PORT   = process.env.PORT || 5000;
 const ADMIN  = process.env.ADMIN;
 const CLIENT = process.env.CLIENT;
 
-const ALLOW_VERCEL_PREVIEWS = String(process.env.ALLOW_VERCEL_PREVIEWS || 'true') === 'true';
-
 const allowedOrigins = new Set([ADMIN, CLIENT]);
-
-function isAllowedPreview(origin) {
-  if (!ALLOW_VERCEL_PREVIEWS) return false;
-  try {
-    const { hostname, protocol } = new URL(origin);
-    if (protocol !== 'https:') return false;
-    const isVercel = hostname.endsWith('.vercel.app');
-    const isOurApp =
-      hostname.startsWith('food-website-backend') ||
-      hostname.startsWith('food-website-client');
-    return isVercel && isOurApp;
-  } catch {
-    return false;
-  }
-}
 
 const corsOptions = {
   origin(origin, cb) {
-    if (!origin) return cb(null, true);
-
+    if (!origin) return cb(null, true); 
     if (allowedOrigins.has(origin)) return cb(null, true);
-
-    if (isAllowedPreview(origin)) return cb(null, true);
-
     console.warn(`Blocked by CORS: ${origin}`);
     return cb(new Error(`Not allowed by CORS: ${origin}`));
   },
