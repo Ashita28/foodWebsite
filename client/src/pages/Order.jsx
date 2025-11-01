@@ -69,11 +69,16 @@ const Order = () => {
       placedRef.current = true;
       const resp = await createOrder(payload).unwrap();
       clear();
+      setOrderType(null);
+      setInstructions("");
       navigate("/status", {
         state: { success: true, orderId: resp?.order?._id },
       });
     } catch (e) {
       placedRef.current = false;
+      clear();
+      setOrderType(null);
+      setInstructions("");
       navigate("/status", {
         state: {
           success: false,
