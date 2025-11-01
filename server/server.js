@@ -22,7 +22,7 @@ const corsOptions = {
   origin(origin, cb) {
     if (!origin) return cb(null, true);
     if (allowedOrigins.has(origin)) return cb(null, true);
-    console.warn(`❌ Blocked by CORS: ${origin}`);
+    console.warn(`Blocked by CORS: ${origin}`);
     return cb(new Error(`Not allowed by CORS: ${origin}`));
   },
   credentials: true,
