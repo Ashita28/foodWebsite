@@ -37,12 +37,12 @@ app.use(cors(corsOptions));
 app.options(/^\/api(?:\/.*)?$/, cors(corsOptions));
 app.use(express.json());
 
-app.use('/api', userRoutes);
-app.use('/api', foodRoutes);
-app.use('/api', orderRoutes);
-app.use('/api', chefsRoutes);
-app.use('/api', tableRoutes);
-app.use('/api', analyticsRoutes);
+app.use('/', userRoutes);
+app.use('/', foodRoutes);
+app.use('/', orderRoutes);
+app.use('/', chefsRoutes);
+app.use('/', tableRoutes);
+app.use('/', analyticsRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
