@@ -45,3 +45,12 @@ button, input{
     border: 2px solid gray;
   }
 }
+
+
+@media (min-width: 1220px) and (max-width: 2000px) {
+  body {
+    width: 24rem;
+    height: 40rem;
+    border: 2px solid gray;
+  }
+}
