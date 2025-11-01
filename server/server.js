@@ -12,16 +12,37 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 
 const app = express();
 
-const PORT = process.env.PORT || 5000;
-const ADMIN = process.env.ADMIN || 'https://food-website-backend-six.vercel.app';
+const PORT   = process.env.PORT || 5000;
+const ADMIN  = process.env.ADMIN  || 'https://food-website-backend-six.vercel.app';
 const CLIENT = process.env.CLIENT || 'https://food-website-client.vercel.app';
+
+const ALLOW_VERCEL_PREVIEWS = String(process.env.ALLOW_VERCEL_PREVIEWS || 'true') === 'true';
 
 const allowedOrigins = new Set([ADMIN, CLIENT]);
 
+function isAllowedPreview(origin) {
+  if (!ALLOW_VERCEL_PREVIEWS) return false;
+  try {
+    const { hostname, protocol } = new URL(origin);
+    if (protocol !== 'https:') return false;
+    const isVercel = hostname.endsWith('.vercel.app');
+    const isOurApp =
+      hostname.startsWith('food-website-backend') ||
+      hostname.startsWith('food-website-client');
+    return isVercel && isOurApp;
+  } catch {
+    return false;
+  }
+}
+
 const corsOptions = {
   origin(origin, cb) {
-    if (!origin) return cb(null, true); 
+    if (!origin) return cb(null, true);
+
     if (allowedOrigins.has(origin)) return cb(null, true);
+
+    if (isAllowedPreview(origin)) return cb(null, true);
+
     console.warn(`Blocked by CORS: ${origin}`);
     return cb(new Error(`Not allowed by CORS: ${origin}`));
   },
@@ -31,7 +52,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('/*', cors(corsOptions));            
+
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
 
 app.use(express.json());
 
